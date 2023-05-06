@@ -38,8 +38,8 @@ def main(update:Update,context:CallbackContext):
     
     elif data == 'Avftobus yo\'nalishi haqida🗒':
         text = "15-avftobus yo'nalishi chizmasi(xaritasi)"
-        # photo =  ''
-        # bot.send_photo(chat_id,photo=photo,caption=text)
+        photo =  'AgACAgIAAxkBAAIBUmRV7djJlCczw1YgaBckR2Yh4U4rAALVyjEbAhyxSmnDOZss2faMAQADAgADcwADLwQ'
+        bot.send_photo(chat_id,photo=photo,caption=text)
         text="""
         15 - avftobus yo'nalishidagi to'xtash bekatlari
         ________________________________
@@ -56,10 +56,7 @@ def main(update:Update,context:CallbackContext):
         Mashhura klinikasi bekati 
         <a href='https://goo.gl/maps/mVKHjLt3aLXfAY8F9'>📍Joylashuv</a>
         ___________________
-        Hakim Termiziy masjidi bekati
-        <a href='https://goo.gl/maps/S59WraEs4nc3VsNm8'>📍Joylashuv</a>
-        ___________________
-        Ankalogiya shifoxonasi bekati
+        Onkalogiya shifoxonasi bekati
         <a href='https://goo.gl/maps/SxDyBkYrb1DoywgM8'>📍Joylashuv</a>
         ___________________
         Temir yo'l bekati
@@ -83,9 +80,6 @@ def main(update:Update,context:CallbackContext):
         Surxon stadioni bekati
         <a href='https://goo.gl/maps/J7DTDbmbtmbL1SnN9'>📍Joylashuv</a>
         ___________________
-        Surxon stadioni bekati
-        <a href='https://goo.gl/maps/J7DTDbmbtmbL1SnN9'>📍Joylashuv</a>
-        ___________________
         Olimpiada zaxiralar kolleji bekati
         <a href='https://goo.gl/maps/Gw7U6feQUQkmYSYn7'>📍Joylashuv</a>
         ___________________
@@ -95,6 +89,9 @@ def main(update:Update,context:CallbackContext):
         """
         bot.send_message(chat_id,text,parse_mode='HTML')
     elif data=='Об автобусном маршруте🗒':
+        text = "Схема маршрута 15 автобусов (карта)"
+        photo =  'AgACAgIAAxkBAAIBUmRV7djJlCczw1YgaBckR2Yh4U4rAALVyjEbAhyxSmnDOZss2faMAQADAgADcwADLwQ'
+        bot.send_photo(chat_id,photo=photo,caption=text)
         text="""
         15 - автобусные остановки
         ________________________________
@@ -110,9 +107,6 @@ def main(update:Update,context:CallbackContext):
         ___________________
         клиника Машхура
         <a href='https://goo.gl/maps/mVKHjLt3aLXfAY8F9'>📍Местоположение</a>
-        ___________________
-        Мечеть Хакима Термизи, остановка
-        <a href='https://goo.gl/maps/S59WraEs4nc3VsNm8'>📍Местоположение</a>
         ___________________
         Oнкологической больницы остановка
         <a href='https://goo.gl/maps/SxDyBkYrb1DoywgM8'>📍Местоположение</a>
@@ -146,12 +140,25 @@ def main(update:Update,context:CallbackContext):
         ___________________
         """
         bot.send_message(chat_id,text,parse_mode='HTML')
+    elif data == "To'g'ri yo'nalish🚌":
+        btn1=InlineKeyboardButton('Janubiy Avtoshoxbekat',callback_data='bek 1')
+        btn2=InlineKeyboardButton('2-Akademik litsey bekati',callback_data='bek 2')
+        btn3=InlineKeyboardButton('Hakim Termiziy masjidi bekati', callback_data='bek 3')
+        btn4=InlineKeyboardButton('Mashhura klinikasi bekati',callback_data='bek 4')
+        btn5=InlineKeyboardButton('Onkalogiya shifoxonasi bekati',callback_data='bek 5')
+        btn6=InlineKeyboardButton('Temir yo\'l bekati',callback_data='bek 6')
+        btn7=InlineKeyboardButton('Prezident maktabi bekati',callback_data='bek 7')
+        nxt=InlineKeyboardButton('➡️',callback_data='ut next')
+        btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+        text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
+        bot.sendMessage(chat_id,text,reply_markup=btn)
     db.save()
 
 
 updater=Updater(token='')
 updater.dispatcher.add_handler(CommandHandler('start',start))
 updater.dispatcher.add_handler(MessageHandler(Filters.text,main))
+updater.dispatcher.add_handler(MessageHandler(Filters.photo,img))
 
 updater.start_polling()
 updater.idle()
