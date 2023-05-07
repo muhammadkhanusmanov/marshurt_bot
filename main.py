@@ -148,7 +148,7 @@ def main(update:Update,context:CallbackContext):
         btn5=InlineKeyboardButton('Onkalogiya shifoxonasi bekati',callback_data='bek 5')
         btn6=InlineKeyboardButton('Temir yo\'l bekati',callback_data='bek 6')
         btn7=InlineKeyboardButton('Prezident maktabi bekati',callback_data='bek 7')
-        nxt=InlineKeyboardButton('➡️',callback_data='tesk next')
+        nxt=InlineKeyboardButton('➡️',callback_data='next to')
         btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
         bot.sendMessage(chat_id,text,reply_markup=btn)
@@ -160,7 +160,7 @@ def main(update:Update,context:CallbackContext):
         btn5=InlineKeyboardButton("TERDU bekati",callback_data='bek 12')
         btn6=InlineKeyboardButton("Barkamol avlod bekati",callback_data='bek 13')
         btn7=InlineKeyboardButton("Yubleniy bekati",callback_data='bek 14')
-        nxt=InlineKeyboardButton("➡️",callback_data='to next')
+        nxt=InlineKeyboardButton("➡️",callback_data='next tes')
         btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
         bot.sendMessage(chat_id,text,reply_markup=btn)
@@ -172,7 +172,7 @@ def main(update:Update,context:CallbackContext):
         btn5=InlineKeyboardButton('Oнкологической больницы остановка',callback_data='bek 5')
         btn6=InlineKeyboardButton('Железнодорожная остановка',callback_data='bek 6')
         btn7=InlineKeyboardButton('Oстановка Президентская школа',callback_data='bek 7')
-        nxt=InlineKeyboardButton('➡️',callback_data='tesk next')
+        nxt=InlineKeyboardButton('➡️',callback_data='next to')
         btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
         bot.sendMessage(chat_id,text,reply_markup=btn)
@@ -184,16 +184,72 @@ def main(update:Update,context:CallbackContext):
         btn5=InlineKeyboardButton('Oстановка ТЕРДУ',callback_data='bek 5')
         btn6=InlineKeyboardButton('Идеальная генерирующая остановка',callback_data='bek 6')
         btn7=InlineKeyboardButton('Юбилейная остановка',callback_data='bek 7')
-        nxt=InlineKeyboardButton('➡️',callback_data='tesk next')
+        nxt=InlineKeyboardButton('➡️',callback_data='next tes')
         btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
         bot.sendMessage(chat_id,text,reply_markup=btn)
     db.save()
 
+def next(update:Update,context:CallbackContext):
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
+    bot=context.bot
+    _ , data = query.data
+    db=DB('db.json')
+    lang=db.get_lang(chat_id)
+    if lang=="Uzbekcha🇺🇿":
+        if data=='to':
+            btn1=InlineKeyboardButton("Shimoliy Avtoshoxbekati (Yashil Dunyo)",callback_data='bek 8')
+            btn2=InlineKeyboardButton("Olimpiada zaxiralar kolleji bekati",callback_data='bek 9')
+            btn3=InlineKeyboardButton("Surxon stadioni bekati",callback_data='bek 10')
+            btn4=InlineKeyboardButton("Istiqlol bekati",callback_data='bek 11')
+            btn5=InlineKeyboardButton("TERDU bekati",callback_data='bek 12')
+            btn6=InlineKeyboardButton("Barkamol avlod bekati",callback_data='bek 13')
+            btn7=InlineKeyboardButton("Yubleniy bekati",callback_data='bek 14')
+            back=InlineKeyboardButton("➡️",callback_data='back to')
+            btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
+            bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
+        else:
+            btn1=InlineKeyboardButton('Janubiy Avtoshoxbekat',callback_data='bek 1')
+            btn2=InlineKeyboardButton('2-Akademik litsey bekati',callback_data='bek 2')
+            btn3=InlineKeyboardButton('Hakim Termiziy masjidi bekati', callback_data='bek 3')
+            btn4=InlineKeyboardButton('Mashhura klinikasi bekati',callback_data='bek 4')
+            btn5=InlineKeyboardButton('Onkalogiya shifoxonasi bekati',callback_data='bek 5')
+            btn6=InlineKeyboardButton('Temir yo\'l bekati',callback_data='bek 6')
+            btn7=InlineKeyboardButton('Prezident maktabi bekati',callback_data='bek 7')
+            back=InlineKeyboardButton("➡️",callback_data='back tes')
+            btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
+            bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
+    else:
+        if data=='to':
+            btn1=InlineKeyboardButton('Северный Автошохбекат (Зеленый мир)',callback_data='bek 1')
+            btn2=InlineKeyboardButton('Oстановка колледжа олимпийского резерва',callback_data='bek 2')
+            btn3=InlineKeyboardButton('Стадион Сурхан остановка', callback_data='bek 3')
+            btn4=InlineKeyboardButton('Oстановка Истикляль',callback_data='bek 4')
+            btn5=InlineKeyboardButton('Oстановка ТЕРДУ',callback_data='bek 5')
+            btn6=InlineKeyboardButton('Идеальная генерирующая остановка',callback_data='bek 6')
+            btn7=InlineKeyboardButton('Юбилейная остановка',callback_data='bek 7')
+            back=InlineKeyboardButton("➡️",callback_data='back to')
+            btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
+            bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
+        else:
+            btn1=InlineKeyboardButton('Термез Автошохбекат',callback_data='bek 1')
+            btn2=InlineKeyboardButton('2-Академический лицей остановка',callback_data='bek 2')
+            btn3=InlineKeyboardButton('Мечеть Хакима Термизи, остановка', callback_data='bek 3')
+            btn4=InlineKeyboardButton('клиника Машхура',callback_data='bek 4')
+            btn5=InlineKeyboardButton('Oнкологической больницы остановка',callback_data='bek 5')
+            btn6=InlineKeyboardButton('Железнодорожная остановка',callback_data='bek 6')
+            btn7=InlineKeyboardButton('Oстановка Президентская школа',callback_data='bek 7')
+            back=InlineKeyboardButton("➡️",callback_data='back tes')
+            btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
+            bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
+
 
 updater=Updater(token='5796836647:AAF5s1LBPqGLElUUWNpAGWsIghr6_m4N0U8')
 updater.dispatcher.add_handler(CommandHandler('start',start))
 updater.dispatcher.add_handler(MessageHandler(Filters.text,main))
+
 # updater.dispatcher.add_handler(MessageHandler(Filters.photo,img))
 
 updater.start_polling()
