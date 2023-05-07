@@ -18,10 +18,18 @@ def start(update:Update,context:CallbackContext):
     bot.sendMessage(chat_id,text=text,reply_markup=btn)
 def main(update:Update,context:CallbackContext):
     db=DB('db.json')
-    bot=context.bot
-    message_id=update.message.message_id
-    chat_id=update.message.chat_id
-    data=update.message.text
+    try:
+        query = update.callback_query
+        chat_id = query.message.chat_id
+        message_id = query.message.message_id
+        bot=context.bot
+        _ , data = query.data.split()
+        lang=db.get_lang(chat_id)
+    except:
+        bot=context.bot
+        message_id=update.message.message_id
+        chat_id=update.message.chat_id
+        data=update.message.text
 
     if data=='Uzbekcha🇺🇿':
         db.add_lang('Uzbekcha🇺🇿',chat_id)
@@ -140,7 +148,7 @@ def main(update:Update,context:CallbackContext):
         ___________________
         """
         bot.send_message(chat_id,text,parse_mode='HTML')
-    elif data == "To'g'ri yo'nalish🚌":
+    if data == "To'g'ri yo'nalish🚌" or data == "to":
         btn1=InlineKeyboardButton('Janubiy Avtoshoxbekat',callback_data='bek 1')
         btn2=InlineKeyboardButton('2-Akademik litsey bekati',callback_data='bek 2')
         btn3=InlineKeyboardButton('Hakim Termiziy masjidi bekati', callback_data='bek 3')
@@ -148,11 +156,16 @@ def main(update:Update,context:CallbackContext):
         btn5=InlineKeyboardButton('Onkalogiya shifoxonasi bekati',callback_data='bek 5')
         btn6=InlineKeyboardButton('Temir yo\'l bekati',callback_data='bek 6')
         btn7=InlineKeyboardButton('Prezident maktabi bekati',callback_data='bek 7')
-        nxt=InlineKeyboardButton('➡️',callback_data='next to')
-        btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
-        bot.sendMessage(chat_id,text,reply_markup=btn)
-    elif data == "Teskari yo'nalish🚌":
+        if data=='to' and lang=="Uzbekcha🇺🇿":
+            nxt=InlineKeyboardButton('➡️',callback_data='next to')
+            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
+        elif data!='to':
+            nxt=InlineKeyboardButton('➡️',callback_data='next to')
+            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            bot.sendMessage(chat_id,text,reply_markup=btn)
+    if data == "Teskari yo'nalish🚌" or data == "tes":
         btn1=InlineKeyboardButton("Shimoliy Avtoshoxbekati (Yashil Dunyo)",callback_data='bek 8')
         btn2=InlineKeyboardButton("Olimpiada zaxiralar kolleji bekati",callback_data='bek 9')
         btn3=InlineKeyboardButton("Surxon stadioni bekati",callback_data='bek 10')
@@ -160,11 +173,16 @@ def main(update:Update,context:CallbackContext):
         btn5=InlineKeyboardButton("TERDU bekati",callback_data='bek 12')
         btn6=InlineKeyboardButton("Barkamol avlod bekati",callback_data='bek 13')
         btn7=InlineKeyboardButton("Yubleniy bekati",callback_data='bek 14')
-        nxt=InlineKeyboardButton("➡️",callback_data='next tes')
-        btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
-        bot.sendMessage(chat_id,text,reply_markup=btn)
-    elif data == "Правильное направление🚌":
+        if data=='tes'and lang=='Uzbekcha🇺🇿':
+            nxt=InlineKeyboardButton("➡️",callback_data='next tes')
+            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
+        elif data!='tes':
+            nxt=InlineKeyboardButton("➡️",callback_data='next tes')
+            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            bot.sendMessage(chat_id,text,reply_markup=btn)
+    if data == "Правильное направление🚌" or data == "to":
         btn1=InlineKeyboardButton('Термез Автошохбекат',callback_data='bek 1')
         btn2=InlineKeyboardButton('2-Академический лицей остановка',callback_data='bek 2')
         btn3=InlineKeyboardButton('Мечеть Хакима Термизи, остановка', callback_data='bek 3')
@@ -172,11 +190,16 @@ def main(update:Update,context:CallbackContext):
         btn5=InlineKeyboardButton('Oнкологической больницы остановка',callback_data='bek 5')
         btn6=InlineKeyboardButton('Железнодорожная остановка',callback_data='bek 6')
         btn7=InlineKeyboardButton('Oстановка Президентская школа',callback_data='bek 7')
-        nxt=InlineKeyboardButton('➡️',callback_data='next to')
-        btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
-        bot.sendMessage(chat_id,text,reply_markup=btn)
-    elif data == "Обратное направление🚌":
+        if data=='to' and lang=='Русский🇷🇺':
+            nxt=InlineKeyboardButton("➡️",callback_data='next to')
+            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
+        elif data!='to':
+            nxt=InlineKeyboardButton("➡️",callback_data='next to')
+            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            bot.sendMessage(chat_id,text,reply_markup=btn)
+    if data == "Обратное направление🚌" or data == "tes":
         btn1=InlineKeyboardButton('Северный Автошохбекат (Зеленый мир)',callback_data='bek 1')
         btn2=InlineKeyboardButton('Oстановка колледжа олимпийского резерва',callback_data='bek 2')
         btn3=InlineKeyboardButton('Стадион Сурхан остановка', callback_data='bek 3')
@@ -184,10 +207,15 @@ def main(update:Update,context:CallbackContext):
         btn5=InlineKeyboardButton('Oстановка ТЕРДУ',callback_data='bek 5')
         btn6=InlineKeyboardButton('Идеальная генерирующая остановка',callback_data='bek 6')
         btn7=InlineKeyboardButton('Юбилейная остановка',callback_data='bek 7')
-        nxt=InlineKeyboardButton('➡️',callback_data='next tes')
-        btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
-        bot.sendMessage(chat_id,text,reply_markup=btn)
+        if data=='tes' and lang=='Русский🇷🇺':
+            nxt=InlineKeyboardButton("➡️",callback_data='next tes')
+            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
+        elif data!='tes':
+            nxt=InlineKeyboardButton("➡️",callback_data='next tes')
+            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            bot.sendMessage(chat_id,text,reply_markup=btn)
     db.save()
 
 def next(update:Update,context:CallbackContext):
@@ -195,7 +223,7 @@ def next(update:Update,context:CallbackContext):
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     bot=context.bot
-    _ , data = query.data
+    _ , data = query.data.split()
     db=DB('db.json')
     lang=db.get_lang(chat_id)
     if lang=="Uzbekcha🇺🇿":
@@ -207,7 +235,7 @@ def next(update:Update,context:CallbackContext):
             btn5=InlineKeyboardButton("TERDU bekati",callback_data='bek 12')
             btn6=InlineKeyboardButton("Barkamol avlod bekati",callback_data='bek 13')
             btn7=InlineKeyboardButton("Yubleniy bekati",callback_data='bek 14')
-            back=InlineKeyboardButton("➡️",callback_data='back to')
+            back=InlineKeyboardButton("⬅️",callback_data='back to')
             btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
         else:
@@ -218,7 +246,7 @@ def next(update:Update,context:CallbackContext):
             btn5=InlineKeyboardButton('Onkalogiya shifoxonasi bekati',callback_data='bek 5')
             btn6=InlineKeyboardButton('Temir yo\'l bekati',callback_data='bek 6')
             btn7=InlineKeyboardButton('Prezident maktabi bekati',callback_data='bek 7')
-            back=InlineKeyboardButton("➡️",callback_data='back tes')
+            back=InlineKeyboardButton("⬅️",callback_data='back tes')
             btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
     else:
@@ -230,7 +258,7 @@ def next(update:Update,context:CallbackContext):
             btn5=InlineKeyboardButton('Oстановка ТЕРДУ',callback_data='bek 5')
             btn6=InlineKeyboardButton('Идеальная генерирующая остановка',callback_data='bek 6')
             btn7=InlineKeyboardButton('Юбилейная остановка',callback_data='bek 7')
-            back=InlineKeyboardButton("➡️",callback_data='back to')
+            back=InlineKeyboardButton("⬅️",callback_data='back to')
             btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
         else:
@@ -241,14 +269,26 @@ def next(update:Update,context:CallbackContext):
             btn5=InlineKeyboardButton('Oнкологической больницы остановка',callback_data='bek 5')
             btn6=InlineKeyboardButton('Железнодорожная остановка',callback_data='bek 6')
             btn7=InlineKeyboardButton('Oстановка Президентская школа',callback_data='bek 7')
-            back=InlineKeyboardButton("➡️",callback_data='back tes')
+            back=InlineKeyboardButton("⬅️",callback_data='back tes')
             btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
+    db.save()
+
+# def back(update:Update,context:CallbackContext):
+#     query = update.callback_query
+#     chat_id = query.message.chat_id
+#     message_id = query.message.message_id
+#     bot=context.bot
+#     _ , data = query.data.split()
+#     db=DB('db.json')
+#     lang=db.get_lang(chat_id)
 
 
 updater=Updater(token='5796836647:AAF5s1LBPqGLElUUWNpAGWsIghr6_m4N0U8')
 updater.dispatcher.add_handler(CommandHandler('start',start))
 updater.dispatcher.add_handler(MessageHandler(Filters.text,main))
+updater.dispatcher.add_handler(CallbackQueryHandler(next,pattern='next'))
+updater.dispatcher.add_handler(CallbackQueryHandler(main,pattern='back'))
 
 # updater.dispatcher.add_handler(MessageHandler(Filters.photo,img))
 
