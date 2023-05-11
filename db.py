@@ -28,3 +28,40 @@ class DB:
     
     def get_lang(self , chat_id):
         return self.db['users'][str(chat_id)]['til']
+    
+    def get_loc(self,yunalish):
+        if yunalish=='tes':
+            return self.db['bekatlar']["teskari"]
+        else:
+            return self.db['bekatlar']["to'g'ri"]
+    def get_time(self,tartib,yunalish):
+        return self.db['bekat'][yunalish][tartib]
+    def get_admin(self):
+        return self.db['admin']['admins']
+    def del_admin(self,user_id):
+        try:
+            admins=self.db['admin']['admins']
+            admins.remove(user_id)
+            return True
+        except:
+            return False
+    def add_admin(self,user_id):
+        if user_id in self.db['admin']['admins']:
+            return False
+        else:
+            admins=self.db['admin']['admins']
+            admins.append(user_id)
+            return True
+    def get_about(self):
+        return (self.db['bekat']['interval'], self.db['bekat']['start'],self.db['bekat']['end'])
+    def upd(self,inter=None,start=None,end=None):
+        if inter is not None:
+            self.db['bekat']['interval']=inter
+            return None
+        elif start is not None:
+            self.db['bekat']['start']=start
+            return None
+        elif end is not None:
+            self.db['bekat']['end']=end
+            return None
+        
