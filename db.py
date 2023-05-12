@@ -1,4 +1,5 @@
 import json
+from datetime import datetime,timedelta
 
 class DB:
     def __init__(self, db_path):
@@ -64,4 +65,24 @@ class DB:
         elif end is not None:
             self.db['bekat']['end']=end
             return None
-        
+    
+    def main(self,date,bekat,yunalish):
+        date=date+timedelta(hours=5.0)
+        dt=datetime.strptime(date.strftime('%Y-%m-%d %H:%M'),'%Y-%m-%d %H:%M')
+        time=self.db['bekat'][yunalish][bekat]
+        time=str(date.strftime('%Y-%m-%d'))+f' {time}'
+        st=datetime.strptime(time,'%Y-%m-%d %H:%M')
+        time=str(date.strftime('%Y-%m-%d'))+f" {self.db['bekat']['end']}"
+        et=datetime.strptime(time,'%Y-%m-%d %H:%M')
+        if dt>et and dt<(st+timedelta(days=1)):
+            return (st+timedelta(days=1))
+        if st>dt:
+            return st.strftime('%H:%M')
+        if dt>st and dt<et:
+            interval=int(self.db['bekat']['interval'])
+            b=True
+            while b:
+                st=st+timedelta(minutes=interval)
+                if st>=dt:
+                    return st.strftime('%H:%M')
+
