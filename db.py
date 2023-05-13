@@ -54,7 +54,7 @@ class DB:
             admins.append(user_id)
             return True
     def get_about(self):
-        return (self.db['bekat']['interval'], self.db['bekat']['start'],self.db['bekat']['end'])
+        return (self.db['bekat']['interval'], self.db['bekat']['start'],self.db['bekat']['end'],self.db['admin']['admins'])
     def upd(self,inter=None,start=None,end=None):
         if inter is not None:
             self.db['bekat']['interval']=inter

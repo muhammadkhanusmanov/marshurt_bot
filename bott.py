@@ -4,7 +4,6 @@ from db import DB
 
 
 
-
 def start(update:Update,context:CallbackContext):
     db=DB('db.json')
     bot=context.bot
@@ -19,11 +18,10 @@ def start(update:Update,context:CallbackContext):
 def main(update:Update,context:CallbackContext):
     db=DB('db.json')
     admins = db.get_admin()
-    lang=db.get_lang(chat_id)
     try:
         query = update.callback_query
-        chat_id = query.message.chat_id
         message_id = query.message.message_id
+        chat_id = query.message.chat_id
         bot=context.bot
         _ , data = query.data.split()
     except:
@@ -31,7 +29,7 @@ def main(update:Update,context:CallbackContext):
         message_id=update.message.message_id
         chat_id=update.message.chat_id
         data=update.message.text
-    
+    lang=db.get_lang(chat_id)
     if str(chat_id) in admins:
         try:
             a,b=data.split('=')
@@ -47,16 +45,39 @@ def main(update:Update,context:CallbackContext):
                     bot.send_message(chat_id,f'Xarakat tugash vaqti yangilandi✅\nYangilanggan vaqt: {b}')
                 elif a=='add':
                     val=db.add_admin(b)
-                    if val:
+                    if not val:
                         bot.send_message(chat_id,f'Bu foydalanuvchi allaqachon admin')
                     else:
                         bot.send_message(chat_id,f'Admin qo\'shildi✅\nuser_id: {b}')
                 elif a=='del':
                     val=db.del_admin(b)
-                    if val:
+                    if not val:
                         bot.send_message(chat_id,f'Bu foydalanuvchi topilmadi')
                     else:
                         bot.send_message(chat_id,f'Admin o\'chirildi✅\nuser_id: {b}')
+            else:
+
+                if a=='Interval':
+                    db.upd(inter=b)
+                    bot.send_message(chat_id,f'Время интервала обновлено ✅\nОбновлено время: {b}')
+                elif a=='start':
+                    db.upd(start=b)
+                    bot.send_message(chat_id,f'Обновлено время начала действия ✅\nОбновлено время: {b}')
+                elif a=='end':
+                    db.upd(end=b)
+                    bot.send_message(chat_id,f'Время окончания действия обновлено ✅\nОбновлено время: {b}')
+                elif a=='add':
+                    val=db.add_admin(b)
+                    if not val:
+                        bot.send_message(chat_id,f'Этот пользователь уже является администратором')
+                    else:
+                        bot.send_message(chat_id,f'Администратор добавил ✅\nuser_id: {b}')
+                elif a=='del':
+                    val=db.del_admin(b)
+                    if not val:
+                        bot.send_message(chat_id,f'Этот пользователь не найден')
+                    else:
+                        bot.send_message(chat_id,f'Администратор удалил ✅\nuser_id: {b}')
         except:
             pass
 
@@ -185,24 +206,24 @@ def main(update:Update,context:CallbackContext):
         """
         bot.send_message(chat_id,text,parse_mode='HTML')
     if data == "To'g'ri yo'nalish🚌" or data == "to":
-        btn1=InlineKeyboardButton('Janubiy Avtoshoxbekat',callback_data='bek t,1')
-        btn2=InlineKeyboardButton('2-Akademik litsey bekati',callback_data='bek t,2')
-        btn3=InlineKeyboardButton('Hakim Termiziy masjidi bekati', callback_data='bek t,3')
-        btn4=InlineKeyboardButton('Mashhura klinikasi bekati',callback_data='bek t,4')
-        btn5=InlineKeyboardButton('Onkalogiya shifoxonasi bekati',callback_data='bek t,5')
-        btn6=InlineKeyboardButton('Temir yo\'l bekati',callback_data='bek t,6')
-        btn7=InlineKeyboardButton('Prezident maktabi bekati',callback_data='bek t,7')
+        btn2=InlineKeyboardButton('2-Akademik litsey bekati',callback_data='bek t,1')
+        btn3=InlineKeyboardButton('Hakim Termiziy masjidi bekati', callback_data='bek t,2')
+        btn4=InlineKeyboardButton('Mashhura klinikasi bekati',callback_data='bek t,3')
+        btn5=InlineKeyboardButton('Spit despanseri bekati',callback_data='bek t,4')
+        btn6=InlineKeyboardButton('Onkalogiya shifoxonasi bekati',callback_data='bek t,5')
+        btn7=InlineKeyboardButton('Temir yo\'l bekati',callback_data='bek t,6')
+        btn8=InlineKeyboardButton('Prezident maktabi bekati',callback_data='bek t,7')
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
         if data=='to' and lang=="Uzbekcha🇺🇿":
             nxt=InlineKeyboardButton('➡️',callback_data='next to')
-            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            btn=InlineKeyboardMarkup([[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[btn8],[nxt]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
         elif data!='to':
             nxt=InlineKeyboardButton('➡️',callback_data='next to')
-            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            btn=InlineKeyboardMarkup([[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[btn8],[nxt]])
             bot.sendMessage(chat_id,text,reply_markup=btn)
     if data == "Teskari yo'nalish🚌" or data == "tes":
-        btn1=InlineKeyboardButton("Shimoliy Avtoshoxbekati (Yashil Dunyo)",callback_data='bek s,1')
+        btn1=InlineKeyboardButton("Yashil Dunyo bekati",callback_data='bek s,1')
         btn2=InlineKeyboardButton("Olimpiada zaxiralar kolleji bekati",callback_data='bek s,2')
         btn3=InlineKeyboardButton("Surxon stadioni bekati",callback_data='bek s,3')
         btn4=InlineKeyboardButton("Istiqlol bekati",callback_data='bek s,4')
@@ -219,24 +240,24 @@ def main(update:Update,context:CallbackContext):
             btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
             bot.sendMessage(chat_id,text,reply_markup=btn)
     if data == "Правильное направление🚌" or data == "to":
-        btn1=InlineKeyboardButton('Термез Автошохбекат',callback_data='bek t,1')
-        btn2=InlineKeyboardButton('2-Академический лицей остановка',callback_data='bek t,2')
-        btn3=InlineKeyboardButton('Мечеть Хакима Термизи, остановка', callback_data='bek t,3')
-        btn4=InlineKeyboardButton('клиника Машхура',callback_data='bek t,4')
-        btn5=InlineKeyboardButton('Oнкологической больницы остановка',callback_data='bek t,5')
-        btn6=InlineKeyboardButton('Железнодорожная остановка',callback_data='bek t,6')
-        btn7=InlineKeyboardButton('Oстановка Президентская школа',callback_data='bek t,7')
+        btn2=InlineKeyboardButton('2-Академический лицей остановка',callback_data='bek t,1')
+        btn3=InlineKeyboardButton('Мечеть Хакима Термизи, остановка', callback_data='bek t,2')
+        btn4=InlineKeyboardButton('клиника Машхура',callback_data='bek t,3')
+        btn5=InlineKeyboardButton('Коса Диспансерная Станция остановка',callback_data='bek t,4')
+        btn6=InlineKeyboardButton('Oнкологической больницы остановка',callback_data='bek t,5')
+        btn7=InlineKeyboardButton('Железнодорожная остановка',callback_data='bek t,6')
+        btn8=InlineKeyboardButton('Oстановка Президентская школа',callback_data='bek t,7')
         text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
         if data=='to' and lang=='Русский🇷🇺':
             nxt=InlineKeyboardButton("➡️",callback_data='next to')
-            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            btn=InlineKeyboardMarkup([[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[btn8],[nxt]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
         elif data!='to':
             nxt=InlineKeyboardButton("➡️",callback_data='next to')
-            btn=InlineKeyboardMarkup([[btn1],[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[nxt]])
+            btn=InlineKeyboardMarkup([[btn2],[btn3],[btn4],[btn5],[btn6],[btn7],[btn8],[nxt]])
             bot.sendMessage(chat_id,text,reply_markup=btn)
     if data == "Обратное направление🚌" or data == "tes":
-        btn1=InlineKeyboardButton('Северный Автошохбекат (Зеленый мир)',callback_data='bek s,1')
+        btn1=InlineKeyboardButton('Зеленый мир остановка',callback_data='bek s,1')
         btn2=InlineKeyboardButton('Oстановка колледжа олимпийского резерва',callback_data='bek s,2')
         btn3=InlineKeyboardButton('Стадион Сурхан остановка', callback_data='bek s,3')
         btn4=InlineKeyboardButton('Oстановка Истикляль',callback_data='bek s,4')
@@ -264,7 +285,7 @@ def next(update:Update,context:CallbackContext):
     lang=db.get_lang(chat_id)
     if lang=="Uzbekcha🇺🇿":
         if data=='to':
-            btn1=InlineKeyboardButton("Shimoliy Avtoshoxbekati (Yashil Dunyo)",callback_data='bek t,14')
+            btn1=InlineKeyboardButton("Yashil Dunyo bekati",callback_data='bek t,14')
             btn2=InlineKeyboardButton("Olimpiada zaxiralar kolleji bekati",callback_data='bek t,13')
             btn3=InlineKeyboardButton("Surxon stadioni bekati",callback_data='bek t,12')
             btn4=InlineKeyboardButton("Istiqlol bekati",callback_data='bek t,11')
@@ -275,19 +296,19 @@ def next(update:Update,context:CallbackContext):
             btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
         else:
-            btn1=InlineKeyboardButton('Janubiy Avtoshoxbekat',callback_data='bek s,14')
-            btn2=InlineKeyboardButton('2-Akademik litsey bekati',callback_data='bek s,13')
-            btn3=InlineKeyboardButton('Hakim Termiziy masjidi bekati', callback_data='bek s,12')
-            btn4=InlineKeyboardButton('Mashhura klinikasi bekati',callback_data='bek s,11')
-            btn5=InlineKeyboardButton('Onkalogiya shifoxonasi bekati',callback_data='bek s,10')
-            btn6=InlineKeyboardButton('Temir yo\'l bekati',callback_data='bek s,9')
-            btn7=InlineKeyboardButton('Prezident maktabi bekati',callback_data='bek s,8')
+            btn2=InlineKeyboardButton('2-Akademik litsey bekati',callback_data='bek s,14')
+            btn3=InlineKeyboardButton('Hakim Termiziy masjidi bekati', callback_data='bek s,13')
+            btn4=InlineKeyboardButton('Mashhura klinikasi bekati',callback_data='bek s,12')
+            btn5=InlineKeyboardButton('Spit despanseri bekati',callback_data='bek s,11')
+            btn6=InlineKeyboardButton('Onkalogiya shifoxonasi bekati',callback_data='bek s,10')
+            btn7=InlineKeyboardButton('Temir yo\'l bekati',callback_data='bek s,9')
+            btn8=InlineKeyboardButton('Prezident maktabi bekati',callback_data='bek s,8')
             back=InlineKeyboardButton("⬅️",callback_data='back tes')
-            btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
+            btn=InlineKeyboardMarkup([[btn8],[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[back]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
     else:
         if data=='to':
-            btn1=InlineKeyboardButton('Северный Автошохбекат (Зеленый мир)',callback_data='bek t,14')
+            btn1=InlineKeyboardButton('Зеленый мир остановка',callback_data='bek t,14')
             btn2=InlineKeyboardButton('Oстановка колледжа олимпийского резерва',callback_data='bek t,13')
             btn3=InlineKeyboardButton('Стадион Сурхан остановка', callback_data='bek t,12')
             btn4=InlineKeyboardButton('Oстановка Истикляль',callback_data='bek t,11')
@@ -298,15 +319,16 @@ def next(update:Update,context:CallbackContext):
             btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
         else:
-            btn1=InlineKeyboardButton('Термез Автошохбекат',callback_data='bek s,14')
-            btn2=InlineKeyboardButton('2-Академический лицей остановка',callback_data='bek s,13')
-            btn3=InlineKeyboardButton('Мечеть Хакима Термизи, остановка', callback_data='bek s,12')
-            btn4=InlineKeyboardButton('клиника Машхура',callback_data='bek 11')
-            btn5=InlineKeyboardButton('Oнкологической больницы остановка',callback_data='bek s,10')
-            btn6=InlineKeyboardButton('Железнодорожная остановка',callback_data='bek s,9')
-            btn7=InlineKeyboardButton('Oстановка Президентская школа',callback_data='bek s,8')
+            btn2=InlineKeyboardButton('2-Академический лицей остановка',callback_data='bek s,14')
+            btn3=InlineKeyboardButton('Мечеть Хакима Термизи, остановка', callback_data='bek s,13')
+            btn4=InlineKeyboardButton('клиника Машхура',callback_data='bek t,12')
+            btn5=InlineKeyboardButton('Коса Диспансерная Станция остановка',callback_data='bek t,11')
+            btn6=InlineKeyboardButton('Oнкологической больницы остановка',callback_data='bek t,10')
+            btn7=InlineKeyboardButton('Железнодорожная остановка',callback_data='bek t,9')
+            btn8=InlineKeyboardButton('Oстановка Президентская школа',callback_data='bek t,8')
+            text="Kerakli bekatni kiriting va avftobusning taxminiy kelish vaqtini oling"
             back=InlineKeyboardButton("⬅️",callback_data='back tes')
-            btn=InlineKeyboardMarkup([[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[btn1],[back]])
+            btn=InlineKeyboardMarkup([[btn8],[btn7],[btn6],[btn5],[btn4],[btn3],[btn2],[back]])
             bot.edit_message_reply_markup(chat_id,message_id,reply_markup=btn)
     db.save()
  
@@ -321,20 +343,37 @@ def bekat(update:Update,context:CallbackContext):
     togri=db.get_loc('to')
     teskari=db.get_loc('tes')
     yu,bek=data.split(',')
+    date=query.message.date
+    print(date)
+    # text='Adminni o\'chirish uchun quyidagicha yuboring del=user_id'
+    bot.delete_message(chat_id=chat_id,message_id=message_id)
     if lang == 'Uzbekcha🇺🇿':
         if yu == 't':
+            t=db.main(date,bek,'to\'g\'ri')
             lat,lang=togri[int(bek)-1].split(',')
             bot.send_location(chat_id,lat,lang)
+            text=f'🚌Avftobusning taxminiy kelish vaqti:\n_________\n⏰ {t} (±1 daqiqa)'
+            bot.send_message(chat_id=chat_id,text=text)
         else:
+            t=db.main(date,bek,'teskari')
             lat,lang=teskari[int(bek)-1].split(',')
             bot.send_location(chat_id,lat,lang)
+            text=f'🚌Avftobusning taxminiy kelish vaqti:\n_________\n⏰ {t} (±1 daqiqa)'
+            bot.send_message(chat_id=chat_id,text=text)
     else:
         if yu == 't':
+            t=db.main(date,bek,'to\'g\'ri')
             lat,lang=togri[int(bek)-1].split(',')
             bot.send_location(chat_id,lat,lang)
+            text=f'🚌 Расчетное время прибытия автобуса:\n_________\n⏰ {t} (±1 минута)'
+            bot.send_message(chat_id=chat_id,text=text)
         else:
+            t=db.main(date,bek,'teskari')
             lat,lang=teskari[int(bek)-1].split(',')
             bot.send_location(chat_id,lat,lang)
+            text=f'🚌 Расчетное время прибытия автобуса:\n_________\n⏰ {t} (±1 минута)'
+            bot.send_message(chat_id=chat_id,text=text)
+    db.save()
 
 def admin(update:Update,context:CallbackContext):
     bot=context.bot
@@ -350,7 +389,8 @@ def admin(update:Update,context:CallbackContext):
             btn3=InlineKeyboardButton('Boshlash vaqtini o\'zgartirish', callback_data='admin start')
             btn4=InlineKeyboardButton('Admin qo\'shish', callback_data='admin add')
             btn5=InlineKeyboardButton('Admin o\'chirish', callback_data='admin del')
-            btn=InlineKeyboardMarkup([[btn2,btn3],[btn1,btn4],[btn5]])
+            btn6=InlineKeyboardButton('Malumot', callback_data='admin about')
+            btn=InlineKeyboardMarkup([[btn2,btn3],[btn1,btn4],[btn5,btn6]])
             text="Admin sozlamalari⚙️"
             bot.sendMessage(chat_id, text,reply_markup=btn)    
         else:
@@ -359,7 +399,8 @@ def admin(update:Update,context:CallbackContext):
             btn3=InlineKeyboardButton('Изменить время начала', callback_data='admin start')
             btn4=InlineKeyboardButton('Добавить администратора', callback_data='admin add')
             btn5=InlineKeyboardButton('Удалить администратора', callback_data='admin del')
-            btn=InlineKeyboardMarkup([[btn2,btn3],[btn1,btn4],[btn5]])
+            btn6=InlineKeyboardButton('Информация', callback_data='admin about')
+            btn=InlineKeyboardMarkup([[btn2,btn3],[btn1,btn4],[btn5,btn6]])
             text="Настройки администратора⚙️"
             bot.sendMessage(chat_id, text,reply_markup=btn)
 
@@ -380,6 +421,9 @@ def admin_command(update:Update,context:CallbackContext):
             text = 'Avftobuslar xarakatining to\'xtash vaqtini o\'zgartirish uchun quyidagicha yuboring end=vaqt (hh:mm)'
         elif data=='add':
             text='Admin qo\'shish uchun quyidagicha yuboring add=user_id'
+        elif data=='about':
+            q,w,e,r=db.get_about()
+            text = f"Admins: {r}\n\nInterval time: {q}\n\nStart time: {w}\n\nEnd time: {e}"
         else:
             text='Adminni o\'chirish uchun quyidagicha yuboring del=user_id'
         bot.edit_message_text(chat_id=chat_id,message_id=message_id,text=text)
@@ -392,6 +436,9 @@ def admin_command(update:Update,context:CallbackContext):
             text = 'Чтобы изменить время автобусной остановки, отправьте end=время (hh:mm)'
         elif data=='add':
             text='Чтобы добавить администратора, отправьте add=user_id'
+        elif data=='about':
+            q,w,e,r=db.get_about()
+            text = f"Admins: {r}\n\nInterval time: {q}\n\nStart time: {w}\n\nEnd time: {e}"
         else:
             text='Чтобы удалить администратора, отправьте del=user_id'
         bot.edit_message_text(chat_id=chat_id,message_id=message_id,text=text)
@@ -399,16 +446,16 @@ def admin_command(update:Update,context:CallbackContext):
 
 
 
-updater=Updater(token='5796836647:AAEF2c1SDvMn7QoeTa7-U-f3w08orRFMNvc')
-updater.dispatcher.add_handler(CommandHandler('start',start))
-updater.dispatcher.add_handler(MessageHandler(Filters.text('Admin paneli👤') | Filters.text('Панель администратора👤'),admin))
-updater.dispatcher.add_handler(MessageHandler(Filters.text,main))
-updater.dispatcher.add_handler(CallbackQueryHandler(next,pattern='next'))
-updater.dispatcher.add_handler(CallbackQueryHandler(main,pattern='back'))
-updater.dispatcher.add_handler(CallbackQueryHandler(bekat,pattern='bek'))
-updater.dispatcher.add_handler(CallbackQueryHandler(admin_command,pattern='admin'))
+# updater=Updater(token=Token)
+# updater.dispatcher.add_handler(CommandHandler('start',start))
+# updater.dispatcher.add_handler(MessageHandler(Filters.text('Admin paneli👤') | Filters.text('Панель администратора👤'),admin))
+# updater.dispatcher.add_handler(MessageHandler(Filters.text,main))
+# updater.dispatcher.add_handler(CallbackQueryHandler(next,pattern='next'))
+# updater.dispatcher.add_handler(CallbackQueryHandler(main,pattern='back'))
+# updater.dispatcher.add_handler(CallbackQueryHandler(bekat,pattern='bek'))
+# updater.dispatcher.add_handler(CallbackQueryHandler(admin_command,pattern='admin'))
 
-# updater.dispatcher.add_handler(MessageHandler(Filters.photo,img))
+# # updater.dispatcher.add_handler(MessageHandler(Filters.photo,img))
 
-updater.start_polling()
-updater.idle()
+# updater.start_polling()
+# updater.idle()
